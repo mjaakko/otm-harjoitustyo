@@ -1,0 +1,3 @@
+# Ohjelmistotekniikan menetelmät
+* *Laskarit*
+* Harjoitustyö

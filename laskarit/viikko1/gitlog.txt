@@ -1,0 +1,103 @@
+commit 9cdd1bdc88682b98a9541d1a99339cea4590b14b
+Author: Jaakko Malkki <jaakko.malkki@helsinki.fi>
+Date:   Fri Mar 16 13:33:11 2018 +0200
+
+    tiedostoja
+
+ tiedostoja/file22 | 0
+ tiedostoja/file3  | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit d3d98888117a622887bd4b2db72baf4c8075e3db
+Author: Jaakko Malkki <jaakko.malkki@helsinki.fi>
+Date:   Fri Mar 16 13:28:08 2018 +0200
+
+    muokattu..
+
+ eka.txt    | 3 +++
+ kolmas.txt | 3 ++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+commit 07fa511445d15b03053e524f50ac329a95f020a5
+Author: Jaakko Malkki <jaakko.malkki@helsinki.fi>
+Date:   Fri Mar 16 13:26:49 2018 +0200
+
+    uudelleennimetty tiedosto
+
+ tiedosto.txt => eka.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 6b0ccdf0eebcb3cb9900878499fab1bd4eec0aa4
+Author: Jaakko Malkki <jaakko.malkki@helsinki.fi>
+Date:   Fri Mar 16 13:26:15 2018 +0200
+
+    poistettu toinen.txt
+
+ toinen.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit c7b8f1d67aec99e06e87436baa452db4d9144b46
+Author: Jaakko Malkki <jaakko.malkki@helsinki.fi>
+Date:   Fri Mar 16 13:24:08 2018 +0200
+
+    muokattu tiedosto.txt
+
+ tiedosto.txt | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+commit f22d8dd7d65638aa147edfa47928fd3d7ebafefb
+Author: Jaakko Malkki <jaakko.malkki@helsinki.fi>
+Date:   Fri Mar 16 13:23:41 2018 +0200
+
+    lisätty sisältöä
+
+ tiedosto.txt | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+commit 3fb15d31208b0bc2bfabd71b6ef8d4b2275808a5
+Author: Jaakko Malkki <jaakko.malkki@helsinki.fi>
+Date:   Fri Mar 16 13:19:54 2018 +0200
+
+    lisätty hakemisto
+
+ stuff/tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 6b99072f24684efad77f045e811598fdbe5d9ab3
+Author: Jaakko Malkki <jaakko.malkki@helsinki.fi>
+Date:   Fri Mar 16 13:19:24 2018 +0200
+
+    muokkauksia
+
+ kolmas.txt | 1 +
+ toinen.txt | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit 3e74e6750e62a827656fc8948b3af012858fb3d4
+Author: Jaakko Malkki <jaakko.malkki@helsinki.fi>
+Date:   Fri Mar 16 13:18:47 2018 +0200
+
+    lisätty tiedosto
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 03378ab3d12ab39c20b53cda8e205befc3757e34
+Author: Jaakko Malkki <jaakko.malkki@helsinki.fi>
+Date:   Fri Mar 16 13:18:17 2018 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 1 +
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+)
+
+commit 32402059a6c7fc5553b17422decd766cefa28ae5
+Author: Jaakko Malkki <jaakko.malkki@helsinki.fi>
+Date:   Fri Mar 16 13:17:33 2018 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
