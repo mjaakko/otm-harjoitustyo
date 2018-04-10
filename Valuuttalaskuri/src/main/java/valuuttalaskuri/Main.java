@@ -22,15 +22,6 @@ import valuuttalaskuri.ui.CurrencyConverterGui;
  */
 public class Main {
     public static void main(String... args) {
-        try {
-            Collection<ExchangeRate> exchangeRates = new ECBExchangeRateProvider().getExchangeRates();
-            for (ExchangeRate e : exchangeRates) {
-                System.out.println(e.getCurrency().getCurrencyCode()+" = "+e.getRate().toPlainString());
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (XmlPullParserException ex) {
-            ex.printStackTrace();
-        }
+        Application.launch(CurrencyConverterGui.class);
     }
 }

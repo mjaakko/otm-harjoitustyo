@@ -7,6 +7,7 @@ package valuuttalaskuri.currencyconverter;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.Currency;
 import java.util.Map;
 import java.util.Set;
@@ -25,6 +26,10 @@ public class CurrencyConverter {
     
     public Set<Currency> getSupportedCurrencies() {
         return exchangeRates.keySet();
+    }
+    
+    public LocalDate getUpdateDate(Currency currency) {
+        return exchangeRates.get(currency).getDate();
     }
     
     public BigDecimal convertFrom(Currency from, Currency to, BigDecimal amount) {
