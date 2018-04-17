@@ -9,4 +9,5 @@ Sovellus kurssille Ohjelmistotekniikan menetelmät
 ## Komentorivitoiminnot
 ### Testit
 Testien suoritus `mvn test`
+
 Testikattavuusraportti `mvn test jacoco:report`
