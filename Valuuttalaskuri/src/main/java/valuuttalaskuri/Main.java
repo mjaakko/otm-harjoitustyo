@@ -5,7 +5,9 @@
  */
 package valuuttalaskuri;
 
+import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
@@ -13,6 +15,7 @@ import java.util.logging.Logger;
 import javafx.application.Application;
 import org.xmlpull.v1.XmlPullParserException;
 import valuuttalaskuri.common.ExchangeRate;
+import valuuttalaskuri.db.SQLExchangeRateDao;
 import valuuttalaskuri.exchangerateprovider.ECBExchangeRateProvider;
 import valuuttalaskuri.ui.CurrencyConverterGui;
 

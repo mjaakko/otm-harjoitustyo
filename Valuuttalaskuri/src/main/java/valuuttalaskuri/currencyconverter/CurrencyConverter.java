@@ -34,10 +34,10 @@ public class CurrencyConverter {
     
     public BigDecimal convertFrom(Currency from, Currency to, BigDecimal amount) {
         if (!exchangeRates.containsKey(from)) {
-            throw new IllegalArgumentException("No data for currency "+from.getCurrencyCode());
+            throw new IllegalArgumentException("No data for currency " + from.getCurrencyCode());
         }
         if (!exchangeRates.containsKey(to)) {
-            throw new IllegalArgumentException("No data for currency "+to.getCurrencyCode());
+            throw new IllegalArgumentException("No data for currency " + to.getCurrencyCode());
         }
         if (amount.signum() == -1) {
             throw new IllegalArgumentException("Amount must be positive");

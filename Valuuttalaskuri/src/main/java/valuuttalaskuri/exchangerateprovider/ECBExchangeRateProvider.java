@@ -27,7 +27,7 @@ import valuuttalaskuri.common.ExchangeRate;
  * @author jaakko
  */
 public class ECBExchangeRateProvider implements ExchangeRateProvider {
-    private static String URL = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
+    private static final String URL = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
     
     /**
      * Lataa tuoreimmat valuuttakurssit Euroopan keskuspankilta ja palauttaa ne listana
@@ -61,7 +61,7 @@ public class ECBExchangeRateProvider implements ExchangeRateProvider {
     private static List<ExchangeRate> readEnvelope(XmlPullParser xpp) throws XmlPullParserException, IOException {
         List<ExchangeRate> exchangeRates = null;
         
-        while(xpp.next() != XmlPullParser.END_TAG) {
+        while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             } 
@@ -80,7 +80,7 @@ public class ECBExchangeRateProvider implements ExchangeRateProvider {
     private static List<ExchangeRate> readCube1(XmlPullParser xpp) throws XmlPullParserException, IOException {
         List<ExchangeRate> exchangeRates = null;
         
-        while(xpp.next() != XmlPullParser.END_TAG) {
+        while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             } 
@@ -103,7 +103,7 @@ public class ECBExchangeRateProvider implements ExchangeRateProvider {
     private static List<ExchangeRate> readCube2(XmlPullParser xpp, LocalDate date) throws XmlPullParserException, IOException {
         List<ExchangeRate> exchangeRates = new ArrayList<>();
         
-        while(xpp.next() != XmlPullParser.END_TAG) {
+        while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             } 

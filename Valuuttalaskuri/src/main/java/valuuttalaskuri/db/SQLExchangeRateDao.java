@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Currency;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.sqlite.JDBC;
 import valuuttalaskuri.common.ExchangeRate;
 
 /**
@@ -24,6 +27,14 @@ import valuuttalaskuri.common.ExchangeRate;
  * @author jaakko
  */
 public class SQLExchangeRateDao implements ExchangeRateDao {
+    static {
+        //Ei pitäisi olla pakollinen, mutta ei toimi ilmankaan
+        try {
+            DriverManager.registerDriver(new JDBC());
+        } catch (SQLException ex) {
+        }
+    }
+    
     private File file;
     
     public SQLExchangeRateDao(File file) {
@@ -31,7 +42,7 @@ public class SQLExchangeRateDao implements ExchangeRateDao {
     }
 
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:sqlite:"+file.getAbsolutePath());
+        return DriverManager.getConnection("jdbc:sqlite:" + file.getAbsolutePath());
     }
     
     public void init() throws SQLException {
@@ -65,7 +76,7 @@ public class SQLExchangeRateDao implements ExchangeRateDao {
             throw e;
         } finally {
             c.close();
-        }
+        } 
     }
     
     public List<ExchangeRate> findAll() throws SQLException {
@@ -73,7 +84,7 @@ public class SQLExchangeRateDao implements ExchangeRateDao {
             ResultSet rs = c.prepareStatement("SELECT * FROM ExchangeRate").executeQuery();
             
             List<ExchangeRate> result = new ArrayList<>();
-            while(rs.next()) {
+            while (rs.next()) {
                 result.add(new ExchangeRate(Currency.getInstance(rs.getString("currency")), 
                         BigDecimal.valueOf(rs.getDouble("rate")), 
                         LocalDate.parse(rs.getString("date"))));

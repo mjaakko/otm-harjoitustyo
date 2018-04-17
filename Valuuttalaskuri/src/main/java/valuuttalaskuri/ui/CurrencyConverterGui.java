@@ -5,15 +5,22 @@
  */
 package valuuttalaskuri.ui;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Currency;
+import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -31,14 +38,18 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import javafx.util.converter.BigDecimalStringConverter;
 import valuuttalaskuri.common.CurrencyConverterService;
 import valuuttalaskuri.common.ExchangeRate;
 import valuuttalaskuri.db.ExchangeRateDao;
 import valuuttalaskuri.db.MockExchangeRateDao;
+import valuuttalaskuri.db.SQLExchangeRateDao;
+import valuuttalaskuri.exchangerateprovider.ECBExchangeRateProvider;
 import valuuttalaskuri.exchangerateprovider.ExchangeRateProvider;
 import valuuttalaskuri.exchangerateprovider.MockExchangeRateProvider;
+import valuuttalaskuri.ui.ExchangeRateUpdateDialog.OnUpdated;
 
 /**
  *
@@ -47,20 +58,28 @@ import valuuttalaskuri.exchangerateprovider.MockExchangeRateProvider;
 public class CurrencyConverterGui extends Application {
     private CurrencyConverterService service;
     
+    private ComboBox<Currency> fromComboBox;
+    private ComboBox<Currency> toComboBox;
+    private TextField fromAmount;
+    private Label resultAmount;
+    
     @Override
     public void init() {
-        ExchangeRateProvider erp = new MockExchangeRateProvider(new ExchangeRate(Currency.getInstance("IRR"), new BigDecimal("2000"), LocalDate.now()),
-            new ExchangeRate(Currency.getInstance("EUR"), new BigDecimal("1"), LocalDate.now()), 
-            new ExchangeRate(Currency.getInstance("AMD"), new BigDecimal("300"), LocalDate.now()));
-        ExchangeRateDao erd = new MockExchangeRateDao();
+        ExchangeRateProvider erp = new ECBExchangeRateProvider();
+        SQLExchangeRateDao erd = new SQLExchangeRateDao(new File("exchangerates.db"));
+        try {
+            erd.init();
+        } catch (SQLException ex) {
+            //Näytä virhedialogi
+        }
         
         service = new CurrencyConverterService(erp, erd);
         
-        try {
+        /*try {
             //Oikeassa sovelluksessa päivitys tehdään vain tarvittaessa
             service.update();
         } catch (Exception ex) {
-        }
+        }*/
     }
     
     @Override
@@ -83,16 +102,21 @@ public class CurrencyConverterGui extends Application {
         HBox to = new HBox();
         to.setSpacing(10);
         
+        //Järjestä valuuttakoodin mukaan
+        List<Currency> currencies = new ArrayList<>(service.getCurrencyConverter().getSupportedCurrencies());
+        Collections.sort(currencies, (Currency currency1, Currency currency2) -> currency1.getCurrencyCode().compareTo(currency2.getCurrencyCode()));
+        
         //Oikeassa sovelluksessa varmistetaan, että valuuttatiedot on ladattu
-        ComboBox<Currency> toComboBox = new ComboBox(FXCollections.observableArrayList(service.getCurrencyConverter().getSupportedCurrencies()));
+        toComboBox = new ComboBox(FXCollections.observableArrayList(currencies));
         toComboBox.setCellFactory(c -> new CurrencyListCell());
         toComboBox.setMaxWidth(200);
         toComboBox.setMinWidth(200);
         toComboBox.setButtonCell(new CurrencyListCell());
         toComboBox.getSelectionModel().selectFirst();
+        toComboBox.getSelectionModel().selectedItemProperty().addListener(c -> doConversion());
         to.getChildren().add(toComboBox);
         
-        Label resultAmount = new Label();
+        resultAmount = new Label();
         resultAmount.prefWidthProperty().bind(to.widthProperty());
         to.getChildren().add(resultAmount);
         
@@ -100,42 +124,63 @@ public class CurrencyConverterGui extends Application {
         HBox from = new HBox();
         from.setSpacing(10);
         
-        ComboBox<Currency> fromComboBox = new ComboBox(FXCollections.observableArrayList(service.getCurrencyConverter().getSupportedCurrencies()));
+        fromComboBox = new ComboBox(FXCollections.observableArrayList(currencies));
         fromComboBox.setCellFactory(c -> new CurrencyListCell());
         fromComboBox.setMaxWidth(200);
         fromComboBox.setMinWidth(200);
         fromComboBox.setButtonCell(new CurrencyListCell());
         fromComboBox.getSelectionModel().selectFirst();
+        fromComboBox.getSelectionModel().selectedItemProperty().addListener(c -> doConversion());
         from.getChildren().add(fromComboBox);
         
-        TextField fromAmount = new TextField();
+        fromAmount = new TextField();
         fromAmount.prefWidthProperty().bind(from.widthProperty());
         fromAmount.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*(\\.\\d*)?")) {
                 fromAmount.setText(oldValue);
             }
             
-            
-            try {
-                resultAmount.setText(service.getCurrencyConverter().convertFrom(fromComboBox.getSelectionModel().getSelectedItem(), 
-                        toComboBox.getSelectionModel().getSelectedItem(), 
-                        new BigDecimal(fromAmount.getText())).setScale(2, RoundingMode.HALF_UP).toPlainString()+" "+toComboBox.getSelectionModel().getSelectedItem().getCurrencyCode());
-            } catch (Exception ex) {
-                //Oikeassa versiossa näytetään virheilmoitus 
-                ex.printStackTrace();
-            }
+            doConversion();
         });
         from.getChildren().add(fromAmount);
         
         content.getChildren().add(from);
         content.getChildren().add(to);
         
-        Scene scene = new Scene(root, 320, 150);
+        Scene scene = new Scene(root, 350, 150);
         
         stage.setScene(scene);
         stage.setTitle("Valuuttalaskuri");
         stage.setResizable(false);
         stage.show();
+        
+        new ExchangeRateUpdateDialog(service, (boolean updated) -> {
+            if (!updated) {
+                Platform.exit();
+            }
+        });
+    }
+    
+    private void doConversion() {
+        try {
+            if (fromAmount.getText() == null || fromAmount.getText().isEmpty()) {
+                resultAmount.setText("");
+                return;
+            }
+            
+            //Näytä tulokset oikealla määrällä desimaaleja
+            int scale = toComboBox.getSelectionModel().getSelectedItem().getDefaultFractionDigits();
+            if (scale == -1) {
+                scale = 0;
+            }
+            
+            BigDecimal result = service.getCurrencyConverter().convertFrom(fromComboBox.getSelectionModel().getSelectedItem(),
+                    toComboBox.getSelectionModel().getSelectedItem(),
+                    new BigDecimal(fromAmount.getText())).setScale(scale, RoundingMode.HALF_UP);
+            
+            resultAmount.setText(result.toPlainString()+" "+toComboBox.getSelectionModel().getSelectedItem().getCurrencyCode());
+        } catch (Exception ex) {
+        }
     }
 }
 
