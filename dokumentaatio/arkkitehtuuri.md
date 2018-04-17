@@ -1,1 +1,1 @@
-![Arkkitehtuuri](/arkkitehtuuri.png)
+![Arkkitehtuuri](/dokumentaatio/arkkitehtuuri.png)
