@@ -1,1 +1,6 @@
-![Arkkitehtuuri](/dokumentaatio/arkkitehtuuri.png)
+Luokkakaavio:
+![Luokkakaavio](/dokumentaatio/arkkitehtuuri.png)
+
+
+Sekvenssikaavio:
+![Sekvenssikaavio](/dokumentaatio/sekvenssikaavio.png)
