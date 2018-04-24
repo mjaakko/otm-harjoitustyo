@@ -1,6 +1,6 @@
 # Valuuttalaskuri
 
-Sovellus kurssille Ohjelmistotekniikan menetelmät
+Sovellus kurssille Ohjelmistotekniikan menetelmät. Valuuttalaskurilla voi laskea valuutan arvon toisessa valuutassa sekä katsoa historiallisia valuuttakursseja.
 
 ## Dokumentaatio
 * [vaatimusmäärittely](https://github.com/mjaakko/otm-harjoitustyo/blob/master/dokumentaatio/vaatimusm%C3%A4%C3%A4rittely.md)
@@ -12,3 +12,8 @@ Sovellus kurssille Ohjelmistotekniikan menetelmät
 Testien suoritus `mvn test`
 
 Testikattavuusraportti `mvn test jacoco:report`
+### Jarin generointi
+`mvn package`
+
+### Checkstyle
+`mvn jxr:jxr checkstyle:checkstyle`
