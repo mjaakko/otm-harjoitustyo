@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -45,6 +46,10 @@ public class CurrencyConverterService {
     }
     
     public CurrencyConverter getCurrencyConverter() throws Exception {
+        if (!isReady()) {
+            throw new IllegalStateException("Currency converter service is not ready for use");
+        }
+        
         if (converter == null) {
             converter = new CurrencyConverter(listToMap(exchangeRateDao.findAll()));
         }

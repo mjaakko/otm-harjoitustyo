@@ -8,4 +8,5 @@
     <suppress files="valuuttalaskuri.ui.CurrencyConverterGui.java" checks="[a-zA-Z0-9]*"/>
     <suppress files="valuuttalaskuri.ui.CurrencyListCell.java" checks="[a-zA-Z0-9]*"/>
     <suppress files="valuuttalaskuri.ui.ExchangeRateUpdateDialog.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="valuuttalaskuri.ui.HistoricalExchangeRateDialog.java" checks="[a-zA-Z0-9]*"/>
 </suppressions>

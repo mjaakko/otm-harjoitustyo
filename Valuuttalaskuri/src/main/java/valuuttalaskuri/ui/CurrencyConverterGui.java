@@ -9,47 +9,32 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Currency;
 import java.util.List;
-import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import javafx.util.Callback;
-import javafx.util.converter.BigDecimalStringConverter;
 import valuuttalaskuri.common.CurrencyConverterService;
-import valuuttalaskuri.common.ExchangeRate;
-import valuuttalaskuri.db.ExchangeRateDao;
-import valuuttalaskuri.db.MockExchangeRateDao;
+import valuuttalaskuri.common.HistoricalExchangeRateService;
 import valuuttalaskuri.db.SQLExchangeRateDao;
 import valuuttalaskuri.exchangerateprovider.ECBExchangeRateProvider;
+import valuuttalaskuri.exchangerateprovider.ECBHistoricalExchangeRateProvider;
 import valuuttalaskuri.exchangerateprovider.ExchangeRateProvider;
-import valuuttalaskuri.exchangerateprovider.MockExchangeRateProvider;
-import valuuttalaskuri.ui.ExchangeRateUpdateDialog.OnUpdated;
+import valuuttalaskuri.exchangerateprovider.HistoricalExchangeRateProvider;
 
 /**
  *
@@ -58,6 +43,8 @@ import valuuttalaskuri.ui.ExchangeRateUpdateDialog.OnUpdated;
 public class CurrencyConverterGui extends Application {
     private CurrencyConverterService service;
     
+    private HistoricalExchangeRateService historyService;
+    
     private ComboBox<Currency> fromComboBox;
     private ComboBox<Currency> toComboBox;
     private TextField fromAmount;
@@ -65,6 +52,8 @@ public class CurrencyConverterGui extends Application {
     
     @Override
     public void init() {
+        historyService = new HistoricalExchangeRateService(new ECBHistoricalExchangeRateProvider());
+        
         ExchangeRateProvider erp = new ECBExchangeRateProvider();
         SQLExchangeRateDao erd = new SQLExchangeRateDao(new File("exchangerates.db"));
         try {
@@ -75,11 +64,11 @@ public class CurrencyConverterGui extends Application {
         
         service = new CurrencyConverterService(erp, erd);
         
-        /*try {
+        try {
             //Oikeassa sovelluksessa päivitys tehdään vain tarvittaessa
             service.update();
         } catch (Exception ex) {
-        }*/
+        }
     }
     
     @Override
@@ -147,6 +136,13 @@ public class CurrencyConverterGui extends Application {
         content.getChildren().add(from);
         content.getChildren().add(to);
         
+        Button history = new Button("Historia");
+        history.setOnAction(e -> {
+            new HistoricalExchangeRateDialog(historyService, fromComboBox.getSelectionModel().getSelectedItem(), toComboBox.getSelectionModel().getSelectedItem());
+        });
+        
+        content.getChildren().add(history);
+        
         Scene scene = new Scene(root, 350, 150);
         
         stage.setScene(scene);
@@ -154,11 +150,11 @@ public class CurrencyConverterGui extends Application {
         stage.setResizable(false);
         stage.show();
         
-        new ExchangeRateUpdateDialog(service, (boolean updated) -> {
+        /*new ExchangeRateUpdateDialog(service, (boolean updated) -> {
             if (!updated) {
                 Platform.exit();
             }
-        });
+        });*/
     }
     
     private void doConversion() {

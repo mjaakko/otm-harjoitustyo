@@ -45,12 +45,22 @@ public class CurrencyConverterTest {
     }
     
     @Test(expected = IllegalArgumentException.class)
-    public void testConversionInvalidCurrency() {
+    public void testConversionInvalidCurrency1() {
         BigDecimal result = converter.convertFrom(Currency.getInstance("AZN"), Currency.getInstance("USD"), new BigDecimal("-1"));
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testConversionInvalidCurrency2() {
+        BigDecimal result = converter.convertFrom(Currency.getInstance("USD"), Currency.getInstance("IRR"), new BigDecimal("-1"));
     }
     
     @Test
     public void testCurrencyList() {
         assertTrue(converter.getSupportedCurrencies().contains(Currency.getInstance("USD")));
+    }
+    
+    @Test
+    public void testUpdateDate() {
+        assertEquals(converter.getUpdateDate(Currency.getInstance("EUR")), LocalDate.now());
     }
 }

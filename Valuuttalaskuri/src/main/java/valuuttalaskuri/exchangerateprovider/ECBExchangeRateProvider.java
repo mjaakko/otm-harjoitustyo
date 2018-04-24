@@ -22,6 +22,8 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import valuuttalaskuri.common.ExchangeRate;
 
+import static valuuttalaskuri.util.XMLUtil.skip;
+
 /**
  *
  * @author jaakko
@@ -50,7 +52,7 @@ public class ECBExchangeRateProvider implements ExchangeRateProvider {
      * @throws XmlPullParserException
      * @throws IOException 
      */
-    private static List<ExchangeRate> parse(InputStream is) throws XmlPullParserException, IOException {
+    public static List<ExchangeRate> parse(InputStream is) throws XmlPullParserException, IOException {
         XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
         parser.setInput(is, "UTF-8");
         
@@ -119,22 +121,5 @@ public class ECBExchangeRateProvider implements ExchangeRateProvider {
         }
         
         return exchangeRates;
-    }
-    
-    private static void skip(XmlPullParser xpp) throws XmlPullParserException, IOException {
-        if (xpp.getEventType() != XmlPullParser.START_TAG) {
-            throw new IllegalStateException();
-        }
-        int depth = 1;
-        while (depth != 0) {
-            switch (xpp.next()) {
-                case XmlPullParser.END_TAG:
-                    depth--;
-                    break;
-                case XmlPullParser.START_TAG:
-                    depth++;
-                    break;
-            }
-        }
     }
 }

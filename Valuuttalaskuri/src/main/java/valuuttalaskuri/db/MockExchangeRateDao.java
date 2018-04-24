@@ -7,6 +7,7 @@ package valuuttalaskuri.db;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import valuuttalaskuri.common.ExchangeRate;
 
@@ -24,6 +25,10 @@ public class MockExchangeRateDao implements ExchangeRateDao {
 
     @Override
     public List<ExchangeRate> findAll() throws Exception {
+        if (list == null) {
+            return Collections.emptyList();
+        }
+        
         return new ArrayList<>(list);
     }
     
