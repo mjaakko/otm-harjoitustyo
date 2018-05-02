@@ -20,4 +20,6 @@
 
 1.5., 2, Käyttöliittymään suosikkivaluutat, testejä + pientä säätöä
 
+2.5., 2, Testejä, dokumentointia, hienosäätöä
+
 Tunteja yhteensä: 21
