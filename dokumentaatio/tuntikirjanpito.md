@@ -22,4 +22,4 @@
 
 2.5., 2, Testejä, dokumentointia, hienosäätöä
 
-Tunteja yhteensä: 21
+Tunteja yhteensä: 23
