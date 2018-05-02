@@ -14,6 +14,6 @@ import java.util.Set;
  * @author jaakko
  */
 public interface FavoriteCurrencyDao {
-    Collection<Currency> getFavorites();
-    void setFavorite(Currency currency, boolean favorite);
+    Collection<Currency> getFavorites() throws Exception;
+    void setFavorite(Currency currency, boolean favorite) throws Exception;
 }

@@ -33,9 +33,9 @@ public class ECBExchangeRateProvider implements ExchangeRateProvider {
     
     /**
      * Lataa tuoreimmat valuuttakurssit Euroopan keskuspankilta ja palauttaa ne listana
-     * @return
+     * @return Lista valuuttakursseista
      * @throws IOException Jos verkkoyhteys ei toimi tai muu IO-virhe
-     * @throws XmlPullParserException Jos datan lukeminen epäonnistuu
+     * @throws XmlPullParserException Jos data ei ole validia
      */
     @Override
     public Collection<ExchangeRate> getExchangeRates() throws IOException, XmlPullParserException {
@@ -47,10 +47,10 @@ public class ECBExchangeRateProvider implements ExchangeRateProvider {
     
     /**
      * Parsii annetusta InputStreamista XML-muodossa olevat valuuttakurssit
-     * @param is 
-     * @return
-     * @throws XmlPullParserException
-     * @throws IOException 
+     * @param is InputStream
+     * @return InputStreamista parsitut valuuttakurssit listana
+     * @throws XmlPullParserException Jos InputStream ei sisällä validia dataa
+     * @throws IOException Jos InputStreamin lukeminen epäonnistuu
      */
     public static List<ExchangeRate> parse(InputStream is) throws XmlPullParserException, IOException {
         XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();

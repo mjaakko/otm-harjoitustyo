@@ -39,12 +39,21 @@ public class CurrencyConverterService {
         return exchangeRateDao.findAll().size() >= 2;
     }
     
+    /**
+     * Lataa uudet valuuttakurssit ja päivittää ne tietokantaan
+     * @throws Exception Jos kurssien lataaminen epäonnistuu (ei verkkoyhteyttä tms.) tai tietokantaan tallennnus epäonnistuu
+     */
     public void update() throws Exception {
         exchangeRateDao.update(exchangeRateProvider.getExchangeRates());
        
         converter = new CurrencyConverter(listToMap(exchangeRateDao.findAll()));    
     }
     
+    /**
+     * Palauttaa CurrencyConverter-olion, jolla voi tehdä valuuttamuunnoksia
+     * @throws IllegalStateException Jos valuuttamuunnin ei ole valmiskäytettäväksi, katso {@link #isReady()}
+     * @return CurrencyConverter-olio valuuttamuunnoksiin
+     */
     public CurrencyConverter getCurrencyConverter() throws Exception {
         if (!isReady()) {
             throw new IllegalStateException("Currency converter service is not ready for use");

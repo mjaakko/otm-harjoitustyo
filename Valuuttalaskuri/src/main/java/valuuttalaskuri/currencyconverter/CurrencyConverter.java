@@ -24,14 +24,30 @@ public class CurrencyConverter {
         this.exchangeRates = exchangeRates;
     }
     
+    /**
+     * 
+     * @return Lista valuutoista, joilla muunnoksia voi tehdä 
+     */
     public Set<Currency> getSupportedCurrencies() {
         return exchangeRates.keySet();
     }
     
+    /**
+     * Kertoo päivän, jolloin valuutan kurssi päivitettiin
+     * @param currency Valuutta, jonka päivitysaika halutaan selvittää
+     * @return Päivä, jolloin valuutan kurssi on päivitetty
+     */
     public LocalDate getUpdateDate(Currency currency) {
         return exchangeRates.get(currency).getDate();
     }
     
+    /**
+     * Tekee muunnoksen valuutasta toiseen
+     * @param from Valuutta, josta muunnetaan
+     * @param to Valuutta, johon muunnetaan
+     * @param amount Määrä
+     * @return Määrä valuutassa, johon muunnettaan
+     */
     public BigDecimal convertFrom(Currency from, Currency to, BigDecimal amount) {
         if (!exchangeRates.containsKey(from)) {
             throw new IllegalArgumentException("No data for currency " + from.getCurrencyCode());

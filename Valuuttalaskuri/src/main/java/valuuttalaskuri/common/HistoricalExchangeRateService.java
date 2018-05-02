@@ -26,6 +26,14 @@ public class HistoricalExchangeRateService {
         this.provider = provider;
     }
     
+    /**
+     * Lataa historialliset valuuttakurssit kahdelle valuutalle
+     * @param from Valuutta, josta muunnetaan
+     * @param to Valuutta, johon muunnetaan
+     * @param maxDays Maksimimäärä päiviä, joille dataa annetaan. Tuloksessa voi olla dataa myös vähemmälle määrälle päiviä.
+     * @return Map, jossa avaimena on päivä ja arvona valuutan from arvo valuutassa to. Map on järjestetty päivien mukaan nousevaan järjestykseen.
+     * @throws Exception Jos valuuttakurssien lataamisessa tapahtuu virhe (esim. ei verkkoyhteyttä)
+     */
     public Map<LocalDate, BigDecimal> getRatesForCurrencies(Currency from, Currency to, int maxDays) throws Exception {
         if (maxDays < 2) {
             throw new IllegalArgumentException("Data must be requested for atleast 2 days");

@@ -16,4 +16,8 @@
 
 24.4., 2, Testejä, käyttöliittymän säätöä
 
-Tunteja yhteensä: 18
+28.4., 1, Tietokanta suosikkivaluutoille, testejä
+
+1.5., 2, Käyttöliittymään suosikkivaluutat, testejä + pientä säätöä
+
+Tunteja yhteensä: 21

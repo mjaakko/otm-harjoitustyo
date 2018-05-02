@@ -37,10 +37,10 @@ public class ECBHistoricalExchangeRateProvider implements HistoricalExchangeRate
     }
     
     /**
-     * 
-     * @param currency Currency to get exchange rates for
-     * @return Collection of historical exchange rates for specified currency. Collection is not sorted.
-     * @throws Exception 
+     * Lataa historialliset valuuttakurssit yhdelle valuutalle
+     * @param currency Valuutta, jolle historialliset valuuttakurssit ladataan
+     * @return Lista historiallisia valuuttakursseja. Lista ei välttämättä ole järjestyksessä..
+     * @throws Exception Jos valuuttakurssien lataaminen epäonnistuu (esim. ei verkkoyhteyttä)
      */
     @Override
     public Collection<ExchangeRate> getExchangeRates(Currency currency) throws Exception {
@@ -67,7 +67,14 @@ public class ECBHistoricalExchangeRateProvider implements HistoricalExchangeRate
         }
     }
 
-    private static List<ExchangeRate> parse(InputStream is) throws XmlPullParserException, IOException {
+    /**
+     * Parsii valuuttakurssit InputStreamista
+     * @param is InputStream
+     * @return Lista valuuttakursseista
+     * @throws XmlPullParserException Jos data ei ole validia
+     * @throws IOException Jos datan lukeminen epäonnistuu
+     */
+    public static List<ExchangeRate> parse(InputStream is) throws XmlPullParserException, IOException {
         XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
         parser.setInput(is, "UTF-8");
         
