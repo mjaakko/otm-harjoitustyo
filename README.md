@@ -7,11 +7,13 @@ Sovellus kurssille Ohjelmistotekniikan menetelmät. Valuuttalaskurilla voi laske
 * [tuntiaikakirjanpito](/dokumentaatio/tuntikirjanpito.md)
 * [arkkitehtuuri](/dokumentaatio/arkkitehtuuri.md)
 * [käyttöohje](/dokumentaatio/kayttoohje.md)
+* [testausdokumentti](/dokumentaatio/testaus.md)
 
 ## Releaset
 
 * [Viikko 5](https://github.com/mjaakko/otm-harjoitustyo/releases/tag/viikko5)
 * [Viikko 6](https://github.com/mjaakko/otm-harjoitustyo/releases/tag/viikko6)
+* [Loppupalautus](https://github.com/mjaakko/otm-harjoitustyo/releases/tag/loppupalautus)
 
 ## Komentorivitoiminnot
 ### Testit
