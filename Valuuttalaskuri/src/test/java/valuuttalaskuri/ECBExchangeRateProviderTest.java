@@ -43,4 +43,9 @@ public class ECBExchangeRateProviderTest {
         
         assertEquals(exchangeRates.get(0).getDate(), LocalDate.of(2018, 4, 24));
     }
+    
+    @Test(expected = XmlPullParserException.class)
+    public void testInvalidDataThrowsError() throws UnsupportedEncodingException, XmlPullParserException, IOException {
+        ECBExchangeRateProvider.parse(new ByteArrayInputStream("<testi></testi>".getBytes("UTF-8")));
+    }
 }

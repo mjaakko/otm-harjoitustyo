@@ -15,16 +15,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Currency;
 import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -40,13 +37,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import valuuttalaskuri.common.CurrencyConverterService;
 import valuuttalaskuri.common.HistoricalExchangeRateService;
-import valuuttalaskuri.db.FavoriteCurrencyDao;
 import valuuttalaskuri.db.SQLExchangeRateDao;
 import valuuttalaskuri.db.SQLFavoriteCurrencyDao;
 import valuuttalaskuri.exchangerateprovider.ECBExchangeRateProvider;
 import valuuttalaskuri.exchangerateprovider.ECBHistoricalExchangeRateProvider;
 import valuuttalaskuri.exchangerateprovider.ExchangeRateProvider;
-import valuuttalaskuri.exchangerateprovider.HistoricalExchangeRateProvider;
 
 /**
  *
@@ -81,7 +76,8 @@ public class CurrencyConverterGui extends Application {
         try {
             erd.init();
         } catch (SQLException ex) {
-            //Näytä virhedialogi
+            showErrorDialog("Virhe tietokannan luomisessa", "Tarkista kirjoitusoikeudet kansiossa "+new File("").getAbsolutePath());
+            Platform.exit();
         }
         
         service = new CurrencyConverterService(erp, erd);
@@ -90,6 +86,8 @@ public class CurrencyConverterGui extends Application {
         try {
             favoriteCurrencyDao.init();
         } catch (SQLException ex) {
+            showErrorDialog("Virhe tietokannan luomisessa", "Tarkista kirjoitusoikeudet kansiossa "+new File("").getAbsolutePath());
+            Platform.exit();
         }
         
     }
@@ -120,7 +118,6 @@ public class CurrencyConverterGui extends Application {
         HBox to = new HBox();
         to.setSpacing(10);
         
-        //Oikeassa sovelluksessa varmistetaan, että valuuttatiedot on ladattu
         toComboBox = new ComboBox();
         toComboBox.setCellFactory(c -> new CurrencyListCell());
         toComboBox.setMaxWidth(200);
@@ -149,6 +146,7 @@ public class CurrencyConverterGui extends Application {
                 favoriteCurrencyDao.setFavorite(currency, !favorite);
                 
                 updateFavorites();
+                updateComboBox();
             } catch (Exception ex) {
             }
         });
@@ -189,6 +187,7 @@ public class CurrencyConverterGui extends Application {
                 favoriteCurrencyDao.setFavorite(currency, !favorite);
                 
                 updateFavorites();
+                updateComboBox();
             } catch (Exception ex) {
             }
         });
@@ -254,8 +253,6 @@ public class CurrencyConverterGui extends Application {
         } else {
             fromFavorite.setGraphic(new ImageView(unfavorite));
         }
-        
-        //TODO: päivitä lista järjestykseen
     }
     
     private void updateComboBox() throws Exception {
@@ -277,11 +274,22 @@ public class CurrencyConverterGui extends Application {
             
         });
         
+        Currency oldFrom = fromComboBox.getSelectionModel().getSelectedItem();
+        Currency oldTo = toComboBox.getSelectionModel().getSelectedItem();
+        
         fromComboBox.setItems(FXCollections.observableArrayList(currencies));
-        fromComboBox.getSelectionModel().selectFirst();
+        if (oldFrom == null) {
+            fromComboBox.getSelectionModel().selectFirst();
+        } else {
+            fromComboBox.getSelectionModel().select(oldFrom);
+        }
         
         toComboBox.setItems(FXCollections.observableArrayList(currencies));
-        toComboBox.getSelectionModel().selectFirst();
+        if (oldTo == null) {
+            toComboBox.getSelectionModel().selectFirst();
+        } else {
+            toComboBox.getSelectionModel().select(oldTo);
+        }
     }
     
     private void doConversion() {
@@ -304,6 +312,15 @@ public class CurrencyConverterGui extends Application {
             resultAmount.setText(result.toPlainString()+" "+toComboBox.getSelectionModel().getSelectedItem().getCurrencyCode());
         } catch (Exception ex) {
         }
+    }
+    
+    private static void showErrorDialog(String header, String content) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Valuuttalaskuri");
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+
+        alert.showAndWait();
     }
 }
 

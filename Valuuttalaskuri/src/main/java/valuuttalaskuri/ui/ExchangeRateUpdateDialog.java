@@ -96,8 +96,8 @@ public class ExchangeRateUpdateDialog {
                 long delta = System.currentTimeMillis() - start;
                 
                 try {
-                    //Odota vähintään 3s, jotta dialogi ei "välähdä"
-                    Thread.sleep(Math.max(0, 3000-delta));
+                    //Odota vähintään 1s, jotta dialogi ei "välähdä"
+                    Thread.sleep(Math.max(0, 1000-delta));
                 } catch (InterruptedException e) {}
                  
                 return null;
@@ -105,6 +105,8 @@ public class ExchangeRateUpdateDialog {
             
             @Override
             protected void failed() {
+                this.getException().printStackTrace();
+                
                 retry.setVisible(true);
                 progress.setVisible(false);
                 label.setText(ERROR_TEXT);

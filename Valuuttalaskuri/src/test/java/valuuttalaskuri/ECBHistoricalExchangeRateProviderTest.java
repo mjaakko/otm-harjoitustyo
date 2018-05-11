@@ -51,4 +51,9 @@ public class ECBHistoricalExchangeRateProviderTest {
     public void testEUR() throws Exception {
         assertFalse(new ECBHistoricalExchangeRateProvider().getExchangeRates(Currency.getInstance("EUR")).isEmpty());
     }
+    
+    @Test(expected = XmlPullParserException.class)
+    public void testInvalidDataThrowsError() throws UnsupportedEncodingException, XmlPullParserException, IOException {
+        ECBHistoricalExchangeRateProvider.parse(new ByteArrayInputStream("<testi></testi>".getBytes("UTF-8")));
+    }
 }

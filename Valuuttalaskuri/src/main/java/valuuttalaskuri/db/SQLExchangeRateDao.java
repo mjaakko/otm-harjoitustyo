@@ -45,6 +45,10 @@ public class SQLExchangeRateDao implements ExchangeRateDao {
         return DriverManager.getConnection("jdbc:sqlite:" + file.getAbsolutePath());
     }
     
+    /**
+     * Alustaa tietokannan luomalla tarvittaessa tietokantataulun
+     * @throws SQLException 
+     */
     public void init() throws SQLException {
         try (Connection c = getConnection()) {
             c.prepareStatement("CREATE TABLE IF NOT EXISTS ExchangeRate ("
@@ -54,6 +58,12 @@ public class SQLExchangeRateDao implements ExchangeRateDao {
         }
     }
     
+    /**
+     * Päivittää valuuttakurssit tietokantaan
+     * @param exchangeRates Luettelo valuuttakursseista
+     * @throws SQLException 
+     */
+    @Override
     public void update(Collection<ExchangeRate> exchangeRates) throws SQLException {
         Connection c = getConnection();
         
@@ -79,6 +89,12 @@ public class SQLExchangeRateDao implements ExchangeRateDao {
         } 
     }
     
+    /**
+     * Hakee kaikki valuuttakurssit tietokannasta
+     * @return Lista valuuttakursseista
+     * @throws SQLException 
+     */
+    @Override
     public List<ExchangeRate> findAll() throws SQLException {
         try (Connection c = getConnection()) {
             ResultSet rs = c.prepareStatement("SELECT * FROM ExchangeRate").executeQuery();

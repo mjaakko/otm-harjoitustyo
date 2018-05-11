@@ -20,4 +20,7 @@
 
 1.5., 2, Käyttöliittymään suosikkivaluutat, testejä + pientä säätöä
 
-Tunteja yhteensä: 21
+11.5., 3, Valuuttakurssien päivitys ilman käyttöliittymää, testejä, 
+pientä refaktorointia, dokumentointia
+
+Tunteja yhteensä: 24

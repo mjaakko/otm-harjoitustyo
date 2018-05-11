@@ -21,7 +21,7 @@ public class CurrencyListCell extends ListCell<Currency> {
         if (item == null || empty) {
             setText(null);
         } else {
-            setText(item.getCurrencyCode()+" - "+item.getDisplayName(Locale.US));
+            setText(item.getCurrencyCode() + " - " + item.getDisplayName(Locale.US));
         }
     }
 }

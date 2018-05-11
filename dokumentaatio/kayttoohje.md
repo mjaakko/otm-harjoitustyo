@@ -1,8 +1,14 @@
 # Käyttöohje
 ## Suorittaminen
-`java -jar Valuuttalaskuri-1.1-SNAPSHOT.jar`
+`java -jar Valuuttalaskuri.jar`
 
 Ohjelma olettaa, että hakemistossa on kirjoitusoikeudet tietokantoja varten.
+
+Ohjelman voi myös suorittaa ilman käyttöliittymää pelkkien 
+valuuttakurssien päivittämiseen komennolla
+`java -jar Valuuttalaskuri.jar --update-exchange-rates`. Tämä komento on 
+tarkoitettu erityisesti automaattisiin päivityksiin jonkin ajastimen 
+(kuten cron) avulla.
 
 ## Valuuttamuunnokset
 

@@ -28,6 +28,11 @@ Käyttöliittymä on pääsääntöisesti eriytetty sovelluslogiikasta, eli
 valuuttakurssien lataaminen ja tallennus sekä itse valuuttamuunnokset 
 tehdään olion CurrencyConverterService kautta.
 
+Kun ohjelman tilassa tapahtuu muutoksia (käyttäjä muokkaa 
+suosikkivaluuttojaan tai valuuttakurssit ladataan esimmäistä kertaa), 
+käyttöliittymää päivitetään metodeilla `ùpdateFavorites()` ja 
+`updateComboBox()`.
+
 ## Sovelluslogiikka
 
 Valuuttakursseja käytetään CurrencyConverterServicen kautta. 
@@ -38,8 +43,17 @@ käytettäväksi CurrencyConverterin, jolla voi tehdä valuuttamuunnokset.
 
 ![Sekvenssikaavio](/dokumentaatio/sekvenssikaavio.png)
 
+Historiallisia valuuttakursseja käytetään luokan 
+`HistoricalExchangeRateService` kautta. 
+`HistoricalExchangeRateService`llä on metodi, joka lataa historialliset 
+valuuttakurssit kahden valuutan välillä halutulta määrältä päiviä.
+
 ## Tietojen tallennus
 
 Valuuttakurssit ja käyttäjän suosikkivaluutat tallennetaan 
 SQLite-tietokantoihin. Sovelluslogiikassa tietokantoja käytetään 
 DAO-rajapintojen kautta.
+
+DAO-rakennetta on hyödynnetty testeissä käyttämällä 
+`MockExchangeRateDao` ja `MockFavoriteCurrencyDao` luokkia.
+

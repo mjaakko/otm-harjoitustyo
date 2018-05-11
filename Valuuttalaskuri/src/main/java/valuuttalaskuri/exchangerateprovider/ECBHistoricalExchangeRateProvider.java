@@ -9,6 +9,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDate;
@@ -59,8 +60,11 @@ public class ECBHistoricalExchangeRateProvider implements HistoricalExchangeRate
             return eurExchangeRates;
         }
         
-        //TODO: tarkista 404
-        URLConnection conn = new URL(createURL(currency)).openConnection();
+        HttpURLConnection conn = (HttpURLConnection) new URL(createURL(currency)).openConnection();
+        conn.connect();
+        if (conn.getResponseCode() != 200) {
+            throw new IOException("HTTP virhe " + conn.getResponseCode() + " (valuutalle " + currency.getCurrencyCode() + " ei todennäköisesti ole kursseja saatavilla)");
+        }
         
         try (InputStream is = new BufferedInputStream(conn.getInputStream())) {
             return parse(is);
@@ -85,6 +89,7 @@ public class ECBHistoricalExchangeRateProvider implements HistoricalExchangeRate
     private static List<ExchangeRate> readCompactData(XmlPullParser xpp) throws XmlPullParserException, IOException {
         List<ExchangeRate> exchangeRates = null;
         
+        xpp.require(XmlPullParser.START_TAG, null, "CompactData");
         while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG) {
                 continue;
@@ -104,6 +109,7 @@ public class ECBHistoricalExchangeRateProvider implements HistoricalExchangeRate
     private static List<ExchangeRate> readDataSet(XmlPullParser xpp) throws XmlPullParserException, IOException {
         List<ExchangeRate> exchangeRates = null;
         
+        xpp.require(XmlPullParser.START_TAG, null, "DataSet");
         while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG) {
                 continue;
@@ -125,6 +131,7 @@ public class ECBHistoricalExchangeRateProvider implements HistoricalExchangeRate
         
         Currency currency = Currency.getInstance(xpp.getAttributeValue(null, "CURRENCY"));
         
+        xpp.require(XmlPullParser.START_TAG, null, "Series");
         while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG) {
                 continue;

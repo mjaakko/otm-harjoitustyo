@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package valuuttalaskuri.db;
+package valuuttalaskuri;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import valuuttalaskuri.common.ExchangeRate;
+import valuuttalaskuri.db.ExchangeRateDao;
 
 /**
  *

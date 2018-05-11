@@ -17,7 +17,7 @@ import java.util.Objects;
 public class ExchangeRate {
     private Currency currency;
     private BigDecimal rate;
-    //Date when exchange rate was updated
+    //Päivä jolloin kurssi päivitettiin
     private LocalDate date;
 
     public ExchangeRate(Currency currency, BigDecimal rate, LocalDate date) {

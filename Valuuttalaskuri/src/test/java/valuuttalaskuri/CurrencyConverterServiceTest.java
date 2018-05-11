@@ -8,16 +8,13 @@ package valuuttalaskuri;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Currency;
-import junit.framework.Assert;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import valuuttalaskuri.common.CurrencyConverterService;
 import valuuttalaskuri.common.ExchangeRate;
 import valuuttalaskuri.db.ExchangeRateDao;
-import valuuttalaskuri.db.MockExchangeRateDao;
 import valuuttalaskuri.exchangerateprovider.ExchangeRateProvider;
-import valuuttalaskuri.exchangerateprovider.MockExchangeRateProvider;
 
 public class CurrencyConverterServiceTest {
     private ExchangeRateDao dao;

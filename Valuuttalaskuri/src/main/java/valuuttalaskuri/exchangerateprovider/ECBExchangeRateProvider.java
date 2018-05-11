@@ -9,7 +9,6 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDate;
@@ -63,6 +62,7 @@ public class ECBExchangeRateProvider implements ExchangeRateProvider {
     private static List<ExchangeRate> readEnvelope(XmlPullParser xpp) throws XmlPullParserException, IOException {
         List<ExchangeRate> exchangeRates = null;
         
+        xpp.require(XmlPullParser.START_TAG, null, "gesmes:Envelope");
         while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG) {
                 continue;
@@ -82,6 +82,7 @@ public class ECBExchangeRateProvider implements ExchangeRateProvider {
     private static List<ExchangeRate> readCube1(XmlPullParser xpp) throws XmlPullParserException, IOException {
         List<ExchangeRate> exchangeRates = null;
         
+        xpp.require(XmlPullParser.START_TAG, null, "Cube");
         while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG) {
                 continue;
@@ -105,6 +106,7 @@ public class ECBExchangeRateProvider implements ExchangeRateProvider {
     private static List<ExchangeRate> readCube2(XmlPullParser xpp, LocalDate date) throws XmlPullParserException, IOException {
         List<ExchangeRate> exchangeRates = new ArrayList<>();
         
+        xpp.require(XmlPullParser.START_TAG, null, "Cube");
         while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG) {
                 continue;

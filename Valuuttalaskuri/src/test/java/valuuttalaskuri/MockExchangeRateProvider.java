@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package valuuttalaskuri.exchangerateprovider;
+package valuuttalaskuri;
 
 import java.util.Arrays;
 import java.util.Collection;
 import valuuttalaskuri.common.ExchangeRate;
+import valuuttalaskuri.exchangerateprovider.ExchangeRateProvider;
 
 /**
  *

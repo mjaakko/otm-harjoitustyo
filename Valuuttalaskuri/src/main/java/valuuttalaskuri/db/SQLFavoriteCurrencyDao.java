@@ -11,11 +11,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Currency;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import org.sqlite.JDBC;
 
@@ -42,6 +40,10 @@ public class SQLFavoriteCurrencyDao implements FavoriteCurrencyDao {
         return DriverManager.getConnection("jdbc:sqlite:" + file.getAbsolutePath());
     }
 
+    /**
+     * Alustaa tarvittaessa tietokannan luomalla tietokantataulun
+     * @throws SQLException 
+     */
     public void init() throws SQLException {
         try (Connection c = getConnection()) {
             c.prepareStatement("CREATE TABLE IF NOT EXISTS FavoriteCurrency ("
@@ -50,6 +52,11 @@ public class SQLFavoriteCurrencyDao implements FavoriteCurrencyDao {
         }
     }
     
+    /**
+     * Lataa tietokannasta listan käyttäjän suosikkivaluutoista
+     * @return Lista käyttäjän suosikkivaluutoista
+     * @throws SQLException 
+     */
     @Override
     public Collection<Currency> getFavorites() throws SQLException {
         try (Connection c = getConnection()) {
@@ -65,6 +72,12 @@ public class SQLFavoriteCurrencyDao implements FavoriteCurrencyDao {
         }
     }
 
+    /**
+     * Lisää tai poistaa suosikeista
+     * @param currency Valuutta
+     * @param favorite true jos valuutta lisätään suokkeihin, false jos valuutta poistetaan suosikeista
+     * @throws SQLException 
+     */
     @Override
     public void setFavorite(Currency currency, boolean favorite) throws SQLException {
         try (Connection c = getConnection()) {
