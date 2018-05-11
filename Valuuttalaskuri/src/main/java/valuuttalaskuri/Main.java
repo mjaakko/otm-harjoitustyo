@@ -30,7 +30,14 @@ import valuuttalaskuri.ui.CurrencyConverterGui;
 public class Main {
     public static void main(String... args) {
         if (args.length >= 1 && args[0] != null && "--update-exchange-rates".equals(args[0])) {
-            ExchangeRateProvider erp = new ECBExchangeRateProvider();
+            updateExchangeRates();
+        } else {
+            Application.launch(CurrencyConverterGui.class);
+        }
+    }
+    
+    private static void updateExchangeRates() {
+        ExchangeRateProvider erp = new ECBExchangeRateProvider();
             SQLExchangeRateDao erd = new SQLExchangeRateDao(new File("exchangerates.db"));
             try {
                 erd.init();
@@ -48,8 +55,5 @@ public class Main {
                 System.out.println("Valuuttakurssien päivitys epäonnistui, tarkista internet-yhteys.");
                 System.exit(1);
             }
-        } else {
-            Application.launch(CurrencyConverterGui.class);
-        }
     }
 }
