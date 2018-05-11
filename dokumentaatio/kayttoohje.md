@@ -1,4 +1,7 @@
 # Käyttöohje
+
+Lataa [Valuuttalaskuri.jar](https://github.com/mjaakko/otm-harjoitustyo/releases/download/loppupalautus/Valuuttalaskuri.jar)
+
 ## Suorittaminen
 `java -jar Valuuttalaskuri.jar`
 
